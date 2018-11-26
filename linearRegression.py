@@ -216,6 +216,33 @@ def ridgeRegression(xTraining, yTraining,xTest, yTest, lambdaList, kList):
     return findings[0].theta, findings
 
 
+def ridgeNew(xTraining, yTraining,xTest, yTest, lambdaList, kList):
+
+    print('Ridge Regression\n')
+
+    findings = []
+
+    for lamb in lambdaList:
+        theta = calculateThetaRidge(xTraining, yTraining, lamb)
+        sseTraining = calculateError(xTraining, theta, yTraining)
+        sseTest = calculateError(xTest, theta, yTest)
+
+        # store findings in object
+        resObj = RidgeRegResults()
+        resObj.setResults(0, lamb, 0, sseTraining, sseTest, theta)
+        findings.append(resObj)
+
+    # get optimal lambda, sseTest, sseTraining, theta - sort on sseTest
+    findings = sorted(findings, key=lambda linkObj: linkObj.sseTest)
+
+    print('Findings length = ', findings.__len__())
+
+    print('Error in ridge reg: ', findings[0].sseTest)
+    print('Error in ridge reg last: ', findings[-1].sseTest)
+
+    return findings[0].theta, findings
+
+
 def main():
     lambdaList = [0.01]
     kList = [2,3]

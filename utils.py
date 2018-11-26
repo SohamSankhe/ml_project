@@ -1,5 +1,6 @@
 import numpy as np
 import math
+import random
 
 def getPartitions(x, k):
     rows, _ = np.shape(x)
@@ -79,3 +80,25 @@ def getTargetVariables(oldY):
         else:
             Y.append(1)
     return Y
+
+def getRandomClassRes(yMatchClassTest):
+
+    # random for reference
+    randomClass = []
+    items = [1, 0, -1] # pick among these
+
+    for i in range(yMatchClassTest.__len__()):
+        randVal = random.choice(items)
+        randomClass.append(randVal)
+
+    correctCtr = 0
+    for i in range(yMatchClassTest.__len__()):
+        if randomClass[i] == yMatchClassTest[i]:
+            correctCtr += 1
+
+    print(randomClass)
+
+    correctCtr = correctCtr / yMatchClassTest.__len__()
+    print('Random func acc: ', correctCtr)
+
+    return correctCtr*100

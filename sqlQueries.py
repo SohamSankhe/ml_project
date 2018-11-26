@@ -1,7 +1,7 @@
 
 
-MATCHES = '''SELECT match_id FROM playerperformance p group by match_id;'''
-             #limit 500;'''
+MATCHES = '''SELECT match_id FROM playerperformance p group by match_id
+             limit 100;'''
 
 PLAYER_TEAM_RATINGS = '''select p.match_id, q.overall as 'player_rating' , t.team_rating, p.team_id from
     playerperformance p left join playermatchstatstable q on p.player_name = q.player_name

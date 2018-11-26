@@ -165,7 +165,7 @@ def classifyLogistic(xTraining, yTraining, xTest, yTest):
     wList = []
     resultTuple = (1, 0, -1) # 1- win, 0 - draw, -1 - loss
     #lambdaList = [0.1, 0.2, 0.3, 0.4, 0.5, 0.75, 1, 2, 3, 10]
-    lambdaList = [0.1, 0.2, 0.3, 0.4, 0.5, 0.75, 1]
+    lambdaList = [0.1, 0.2, 0.3, 0.4, 0.5, 1]
     findings = []
 
     for l in lambdaList:

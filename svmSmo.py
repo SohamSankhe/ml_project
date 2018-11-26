@@ -192,7 +192,7 @@ def mySvm(X, Y, cList, X_tst, Y_tst, r):
 
 def mySvmNew(X, Y, c, X_tst, Y_tst, r):
     maxPasses = 1000
-    tolerance = 0.01
+    tolerance = 0.1
 
     alphas, b = smo(X, Y, c, maxPasses, tolerance)
 
@@ -315,12 +315,15 @@ def customSvmMultiClass(X_trn, Y_trn, X_tst, Y_tst):
 
 def customSvmMultiClassNew(X_trn, Y_trn, X_tst, Y_tst):
 
-    cList = [0.1, 0.5]
-    wList = []
+    #cList = [0.1, 0.5]
+    #cList = [1, 2, 3]
+    cList = [0.1, 1, 5, 10, 15, 25, 50]
+    #wList = []
     resultTuple = (1, 0, -1)  # 1- win, 0 - draw, -1 - loss
     findings = []
     #c = 0.1
     for c in cList:
+        wList = []
         for r in resultTuple:
             X = X_trn
             Y = getTargetVarMultiClass(Y_trn, r)

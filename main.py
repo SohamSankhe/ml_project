@@ -32,7 +32,7 @@ xTrainingReg, yTrainingReg = teamRatingPredictionData.getRegressionDataTraining(
 xTestReg, yTestReg, teamRatingTestMat = teamRatingPredictionData.getRegressionDataTest(testingMatches)
 
 # regression for team ratings
-lambdaList = [0.01, 0.05, 0.1, 0.25, 0.5, 1]
+lambdaList = [0.01, 0.05, 0.1, 0.25, 0.5, 1, 2, 3, 4, 5, 10, 20, 30]
 kList = [2, 10, 15, 20, 25, 30, 50]
 
 # train
@@ -42,7 +42,8 @@ xTestReg = np.squeeze(np.asarray(xTestReg))
 yTestReg = np.squeeze(np.asarray(yTestReg))
 
 print('Getting theta for predicting team ratings')
-thetaRidge, ridgeFindings = linearRegression.ridgeRegression(xTrainingReg, yTrainingReg.transpose(), xTestReg, yTestReg.transpose(), lambdaList, kList)
+#thetaRidge, ridgeFindings = linearRegression.ridgeRegression(xTrainingReg, yTrainingReg.transpose(), xTestReg, yTestReg.transpose(), lambdaList, kList)
+thetaRidge, ridgeFindings = linearRegression.ridgeNew(xTrainingReg, yTrainingReg.transpose(), xTestReg, yTestReg.transpose(), lambdaList, kList)
 thetaLinear = linearRegression.linearReg(xTrainingReg, yTrainingReg.transpose(), xTestReg, yTestReg.transpose())
 
 sseTestRidge = linearRegression.calculateError(xTestReg, thetaRidge, yTestReg.transpose())
@@ -58,6 +59,11 @@ if sseTestRidge < sseTestLinear:
 
 print('\ntheta: ', theta)
 
+print('New ridge')
+for r in ridgeFindings:
+    print(r.lamb, ' ', r.sseTest, r.sseTraining)
+
+# sys.exit(1)
 
 # k, lamb, i, sseTraining, sseTest, theta
 #ridgeFindings
@@ -158,8 +164,8 @@ for l in lstKRemoved:
 hpVsAccLog = sorted(hpVsAccLog, key=lambda obj:obj[0])
 
 # plotting logistic regression hp vs acc
-plots.plotXvsY(hpVsAccLog)
-
+#plots.plotXvsY(hpVsAccLog, 'Logistic regression')
+#plots.plotXvsYOld(hpVsAccLog, 'Logistic regression')
 
 
 
@@ -178,12 +184,13 @@ print('--- Final test Accuracy with SVM: ', \
 hpVsAccSvm = []
 
 for f in findingsSvm:
+    print('--- ', f[1], f[2])
     acc = svmSmo.checkAccuracyMultiClass(xTestSvm, yTestSvm, xTrainingClass, yTrainingClass, f[0])
-    t = (f[1],acc)
+    t = (f[1],acc * 100)
     hpVsAccSvm.append(t)
 
 hpVsAccSvm = sorted(hpVsAccSvm, key=lambda obj:obj[0])
-plots.plotXvsY(hpVsAccSvm)
+plots.plotXvsYOld(hpVsAccSvm, 'SVM')
 
 
 # naive bayes sklearn
@@ -202,20 +209,19 @@ wListKnn, findingsKnn = kNearestNeighbours.classifyKnnNew(xTrainingClass, yTrain
 hpVsAccKnn = []
 for f in findingsKnn:
     ac = kNearestNeighbours.checkAccuracyNew(xMatchClassTest, yMatchClassTest,f[0])
-    t = (f[1],ac)
+    t = (f[1],ac * 100)
     hpVsAccKnn.append(t)
 
 hpVsAccKnn = sorted(hpVsAccKnn, key=lambda obj:obj[0])
-plots.plotXvsY(hpVsAccKnn)
+#plots.plotXvsY(hpVsAccKnn, 'k Nearest Neighbour')
+plots.plotXvsYOld(hpVsAccKnn, 'k Nearest Neighbour')
 
-'''
-for r in findingsKnn:
-    print(r[0],' ',r[2],' ',r[3])
-'''
 
 print('--- kNN accuracy on test: ', kNearestNeighbours.checkAccuracyNew(xMatchClassTest, yMatchClassTest,wListKnn) * 100, '%')
 
 
+
+print('Accuracy for a random classifier: ', utils.getRandomClassRes(yMatchClassTest))
 
 '''
 wListKnn, findingsKnn = kFoldClassifier.kFoldClassification(kNearestNeighbours.classifyKnnNew, \

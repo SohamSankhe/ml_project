@@ -15,7 +15,7 @@ def checkAccuracy(xTest, yTest, wList):
 
     #print('Knn prob predictions')
     for i in range(predProbabilites[0].__len__()):
-        print(predProbabilites[0][i], ' - ', predProbabilites[1][i], ' - ', predProbabilites[2][i])
+        #print(predProbabilites[0][i], ' - ', predProbabilites[1][i], ' - ', predProbabilites[2][i])
 
         if (predProbabilites[0][i][1] > predProbabilites[1][i][1]) and (predProbabilites[0][i][1] > predProbabilites[2][i][1]):
             prediction.append(1)  # win
